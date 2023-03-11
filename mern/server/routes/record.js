@@ -40,9 +40,14 @@ recordRoutes.route("/record/:id").get(function (req, res) {
 recordRoutes.route("/record/add").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myobj = {
-    name: req.body.name,
-    position: req.body.position,
-    level: req.body.level,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    region: req.body.region,
+    rating: req.body.rating,
+    fee: req.body.fee,
+    sale: req.body.sale,
+    role: req.body.role,
   };
   db_connect.collection("records").insertOne(myobj, function (err, res) {
     if (err) throw err;
@@ -56,9 +61,14 @@ recordRoutes.route("/update/:id").post(function (req, response) {
   let myquery = { _id: ObjectId( req.params.id )};
   let newvalues = {
     $set: {
-      name: req.body.name,
-      position: req.body.position,
-      level: req.body.level,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    region: req.body.region,
+    rating: req.body.rating,
+    fee: req.body.fee,
+    sale: req.body.sale,
+    role: req.body.role,
     },
   };
   db_connect
@@ -69,6 +79,23 @@ recordRoutes.route("/update/:id").post(function (req, response) {
       response.json(res);
     });
 });
+
+// Login
+recordRoutes.route("/login").post(async function (req, res) {
+  let db_connect = dbo.getDb();
+  const { email, password } = req.body;
+  const user = await db_connect.collection("users").findOne({ "email": email });
+  
+  if (!user) {
+  return res.status(400).json({ message: "Invalid email or password" });
+  }
+  
+  if (password !== user.password) {
+  return res.status(400).json({ message: "Invalid email or password" });
+  }
+  
+  res.json(true);
+  });
 
 // This section will help you delete a record
 recordRoutes.route("/:id").delete((req, response) => {
