@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 
+// new import
+import Alert  from "react-bootstrap/Alert";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -10,6 +16,35 @@ function Login() {
   const [passwordError, setpasswordError] = useState("");
   const [emailError, setemailError] = useState("");
   const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(true);
+
+  // useEffect(() => {
+  //   if (error) {
+  //     setShowAlert(true);
+  //     setTimeout(() => {
+  //       setShowAlert(false);
+  //       setIsError('');
+  //     }, 5000);
+  //   }
+  // }, [error]);
+
+
+  // const logMe = () => {
+  //   var myHeaders = new Headers();
+  //   myHeaders.append("Content-Type", "application/json");
+  //   var raw = JSON.stringify({
+  //     "email": email,
+  //     "password": password
+  //   });
+  //   var requestOptions = {
+  //     method: 'POST',
+  //     headers: myHeaders,
+  //     body: raw,
+  //     redirect: 'follow'
+  //   }
+  // };
+
+
   // const handleValidation = (event) => {
   //   let formIsValid = true;
 
@@ -64,10 +99,24 @@ function Login() {
         // isConnected(result)
           localStorage.setItem("isLoggedIn", result);
         if(result === "true"){
-          navigate("/");
-        } else {
-          setIsError(true)
-        }
+          navigate("/dashboard")};
+        //   toast.success('Connected', {
+        //     position: "top-right",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //     theme: "light",
+        // });
+        // setTimeout(() => window.location = "/", 3000);
+        
+
+        // } else {
+        //   setIsError(true)
+        //   setTimeout(() => setIsError(false), 5000);
+        // }
 
         
       })
@@ -108,16 +157,27 @@ function Login() {
                   {passwordError}
                 </small>
               </div>
-              {isError ? (
-                <p style={{color: "red"}}>{error}</p>
-              ) : (
-                <>
-                
-                </>
-              )}
+
+              {showAlert &&
+                  <Alert variant="danger" onClose={() => setShowAlert(false)}>
+                  <Alert.Heading>{error}</Alert.Heading>
+                  </Alert>
+              }
               <button type="submit" className="btn btn-primary">
                 Submit
               </button>
+              <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              />
             </form>
           </div>
           {/* Source: <a href="https://askavy.com/react-form/">React Form</a> */}

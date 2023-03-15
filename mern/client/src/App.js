@@ -11,6 +11,7 @@ import RecordList from "./components/recordList";
 import Edit from "./components/edit";
 import Create from "./components/create";
 import Login from "./components/login";
+import Dashboard from "./components/dashboard";
 
 const App = () => {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<RecordList />} />
         <Route exact path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/create" element={<Create />} />
       </Routes>
