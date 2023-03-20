@@ -1,31 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
-
-const Record = (props) => (
-  <tr>
-    <td>{props.record.first_name}</td>
-    <td>{props.record.last_name}</td>
-    <td>{props.record.email}</td>
-    <td>{props.record.region}</td>
-    <td>{props.record.rating}</td>
-    <td>{props.record.fee}</td>
-    <td>{props.record.sale}</td>
-    <td>{props.record.role}</td>
-    <td>
-      <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
-      <button className="btn btn-link"
-        onClick={() => {
-          props.deleteRecord(props.record._id);
-        }}
-      >
-        Delete
-      </button>
-    </td>
-  </tr>
-);
 
 export default function RecordList() {
+  const [show, setShow] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
+  const handleClose = () => {
+    setShow(false);
+    setRecordToDelete(null);
+  };
+  const handleShow = (recordId) => {
+    setShow(true);
+    setRecordToDelete(recordId);
+  };
+  const Record = (props) => (
+    <tr>
+      <td>{props.record.first_name}</td>
+      <td>{props.record.last_name}</td>
+      <td>{props.record.email}</td>
+      <td>{props.record.region}</td>
+      <td>{props.record.rating}</td>
+      <td>{props.record.fee}</td>
+      <td>{props.record.sale}</td>
+      <td>{props.record.role}</td>
+      <td>
+        <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
+        <button className="btn btn-link"
+          onClick={() => handleShow(props.record._id)}
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
+
+
+
   const [records, setRecords] = useState([]);
 
   // This method fetches the records from the database.
@@ -60,6 +72,8 @@ export default function RecordList() {
 
   // This method will map out the records on the table
   function recordList() {
+
+
     return records.map((record) => {
       return (
         <Record
@@ -70,10 +84,27 @@ export default function RecordList() {
       );
     });
   }
-
+  
   // This following section will display the table with the records of individuals.
   return (
     <div>
+        <>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>You're about to dealing an Agent!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to continue?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => deleteRecord(recordToDelete)}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+
       <h3>Record List</h3>
       <table className="table table-striped" style={{ marginTop: 20 }}>
         <thead>

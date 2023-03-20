@@ -1,5 +1,6 @@
 const express = require("express");
 
+
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /record.
@@ -106,6 +107,57 @@ recordRoutes.route("/:id").delete((req, response) => {
     console.log("1 document deleted");
     response.json(obj);
   });
+});
+
+
+// transaction 
+recordRoutes.route("/transactions").get(function (req, res) {
+  let db_connect = dbo.getDb("employees");
+  const employeesCollection = db_connect.collection('transactions');
+  console.log("========employeesCollection")
+  console.log(employeesCollection)
+  employeesCollection.aggregate([
+    {
+      $lookup: {
+        from: 'records',
+        localField: 'agent_id',
+        foreignField: '_id',
+        as: 'agent'
+      }
+    },
+    {
+      $unwind: '$agent'
+    },
+    {
+      $project: {
+        _id: 0,
+        date: 1,
+        amount: 1,
+        agent_full_name: { $concat: ['$agent.first_name', ' ', '$agent.last_name'] },
+      },
+    },
+    {
+      $sort: {
+          data: -1,
+      }
+    },
+      {
+        $limit: 10,
+      }
+  ]).toArray(function (err, result) {
+    console.log("====result")
+    console.log(result)
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+
+recordRoutes.route("/transaction").post(function (req, res) {
+  let db_connect = dbo.getDb("employees");
+  const transaction = req.body 
+  const employeesCollection = db_connect.collection('transactions');
+  employeesCollection.insertOne(transaction)
 });
 
 module.exports = recordRoutes;

@@ -12,6 +12,8 @@ import Edit from "./components/edit";
 import Create from "./components/create";
 import Login from "./components/login";
 import Dashboard from "./components/dashboard";
+import Transaction from  "./components/transaction";
+import Createtransaction from "./components/createtransaction";
 
 const App = () => {
   const navigate = useNavigate();
@@ -30,11 +32,15 @@ const App = () => {
       <Navbar />
       <div style={{ margin: 20 }}>
       <Routes>
-        <Route exact path="/" element={<RecordList />} />
+        {/* <Route exact path="/" element={<RecordList />} /> */}
+        <Route exact path="/" element={<Navigate to="/dashboard" />} />
         <Route exact path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/create" element={<Create />} />
+        <Route path="/transaction" element={<Transaction />} />
+        <Route path="/recordlist" element={<RecordList />} />
+        <Route path="/createtransaction" element={<Createtransaction />} />
       </Routes>
       </div>
     </div>

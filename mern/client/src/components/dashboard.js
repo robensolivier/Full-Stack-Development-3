@@ -11,7 +11,7 @@ function CardAgent() {
         <Card.Text>
           You can see the agent list here.
         </Card.Text>
-        <Link to="/">
+        <Link to="/recordlist">
           <Button variant="primary">See agent list</Button>
         </Link>
       </Card.Body>
@@ -28,7 +28,7 @@ function Transaction() {
         <Card.Text>
           Vous pouvez effectuer des transactions ici.
         </Card.Text>
-        <Link to="/transactions">
+        <Link to="/transaction">
           <Button variant="primary">List of Transaction RocketElevator</Button>
         </Link>
       </Card.Body>
